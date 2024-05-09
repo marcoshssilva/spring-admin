@@ -1,5 +1,7 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
+  servlet:
+    context-path: ${SERVER_SERVLET_CONTEXT_PATH:/}
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 30
@@ -22,7 +24,7 @@ management:
     shutdown:
       enabled: false
   server:
-    port: 8180
+    port: ${MANAGEMENT_PORT:8180}
 spring:
   application:
     name: spring-admin-server
