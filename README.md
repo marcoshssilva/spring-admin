@@ -1,4 +1,4 @@
-# spring-boot-admin
+# Spring-Boot-Admin
 
 ## Live Preview
 
