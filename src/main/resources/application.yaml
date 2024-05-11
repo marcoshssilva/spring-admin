@@ -7,11 +7,12 @@ eureka:
     leaseRenewalIntervalInSeconds: 30
     health-check-url-path: /actuator/health
     metadata-map:
-      startup: ${random.int}
+      username: ${spring.security.user.name}
+      password: ${spring.security.user.password}
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://eureka:eureka@localhost:8761}/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761/eureka/}
 management:
   endpoints:
     web:
@@ -28,8 +29,6 @@ management:
 spring:
   application:
     name: spring-admin-server
-    admin:
-      enabled: true
   security:
     user:
       name: ${SPRING_SECURITY_USER_NAME:sysadmin}
