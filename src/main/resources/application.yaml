@@ -17,6 +17,8 @@ management:
   info:
     env:
       enabled: true
+    java:
+      enabled: true
   endpoints:
     web:
       exposure:
