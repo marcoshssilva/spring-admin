@@ -12,3 +12,4 @@ COPY --from=builder /build/target/spring-admin-server-*.jar app.jar
 ENTRYPOINT java -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 $JAVA_OPTIONS -jar app.jar
 
 EXPOSE 8080
+EXPOSE 8180
