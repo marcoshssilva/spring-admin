@@ -8,7 +8,7 @@ COPY src /build/src
 RUN mvn install
 
 FROM eclipse-temurin:17-jre-focal AS java
-COPY --from=builder /build/target/apring-admin-server-*.jar app.jar
+COPY --from=builder /build/target/spring-admin-server-*.jar app.jar
 ENTRYPOINT java -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 $JAVA_OPTIONS -jar app.jar
 
 EXPOSE 8080
