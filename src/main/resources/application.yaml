@@ -6,6 +6,7 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 30
     health-check-url-path: /actuator/health
+    prefer-ip-address: true
     metadata-map:
       username: ${spring.security.user.name}
       password: ${spring.security.user.password}
