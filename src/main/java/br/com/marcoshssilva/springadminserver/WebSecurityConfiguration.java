@@ -1,53 +1,57 @@
 package br.com.marcoshssilva.springadminserver;
 
+import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.ForwardLogoutSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.List;
+import java.util.UUID;
 
 @Configuration
 @EnableMethodSecurity()
 @EnableWebSecurity
 
 @lombok.extern.slf4j.Slf4j
+@lombok.RequiredArgsConstructor
 public class WebSecurityConfiguration {
-
-    static final String[] AUTH_WHITELIST = { "/actuator/**" };
+    private final AdminServerProperties adminServer;
 
     @Bean
-    public SecurityFilterChain securityFilterChainConfigure(HttpSecurity http) throws Exception {
-        log.info("Configured with enabled Cross-Origin-Resource-Sharing");
-        http.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()));
-        log.info("Configured with disabled Csrf Tokens");
-        http.csrf(CsrfConfigurer::disable);
-        log.info("Configured with disabled Sessions");
-        http.sessionManagement(sessionConfigurer -> sessionConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        log.info("Configured with enabled path only to authenticated users");
-        http.authorizeHttpRequests(httpRequestsConfigurer -> httpRequestsConfigurer.requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated());
-        log.info("Configured with enabled authentication using Http Basic Auth");
-        http.httpBasic(Customizer.withDefaults());
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        successHandler.setTargetUrlParameter("redirectTo");
+        successHandler.setDefaultTargetUrl(this.adminServer.getContextPath() + "/");
+
+        http.authorizeHttpRequests(req ->
+                req.requestMatchers(this.adminServer.getContextPath() + "/assets/**", this.adminServer.getContextPath() + "/login", this.adminServer.getContextPath() + "/actuator/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(formLogin -> formLogin.loginPage(this.adminServer.getContextPath() + "/login")
+                        .successHandler(successHandler))
+                .logout((logout) ->
+                        logout
+                          .logoutUrl(this.adminServer.getContextPath() + "/logout")
+                          .logoutSuccessHandler(
+                                new ForwardLogoutSuccessHandler(this.adminServer.getContextPath() + "/login")))
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .ignoringRequestMatchers(
+                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/logout", HttpMethod.POST.toString()),
+                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/instances", HttpMethod.POST.toString()),
+                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/instances/*", HttpMethod.DELETE.toString()),
+                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/actuator/**")))
+                .rememberMe(rememberMe -> rememberMe.key(UUID.randomUUID()
+                                .toString())
+                        .tokenValiditySeconds(1209600));
         return http.build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        log.info("Setup cors with fully enabled Origins, Methods and Headers");
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
-        return urlBasedCorsConfigurationSource;
     }
 }

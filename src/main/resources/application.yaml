@@ -1,7 +1,7 @@
 server:
   port: ${PORT:8080}
   servlet:
-    context-path: ${SERVER_SERVLET_CONTEXT_PATH:/}
+    context-path: ${SERVER_SERVLET_CONTEXT_PATH:}
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 30
