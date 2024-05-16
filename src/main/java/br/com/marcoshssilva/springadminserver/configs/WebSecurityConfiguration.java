@@ -1,4 +1,4 @@
-package br.com.marcoshssilva.springadminserver;
+package br.com.marcoshssilva.springadminserver.configs;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import org.springframework.context.annotation.Bean;
