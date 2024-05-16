@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.ForwardLogoutSuccessHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.UUID;
@@ -27,28 +26,27 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        String loginPageUrl = this.adminServer.getContextPath() + "/login";
+
         SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(this.adminServer.getContextPath() + "/");
 
         http.authorizeHttpRequests(req ->
-                req.requestMatchers(this.adminServer.getContextPath() + "/assets/**", this.adminServer.getContextPath() + "/login", this.adminServer.getContextPath() + "/actuator/**")
+                req.requestMatchers(loginPageUrl,
+                            this.adminServer.getContextPath() + "/assets/**",
+                            this.adminServer.getContextPath() + "/actuator/**"
+                        )
                         .permitAll()
                         .anyRequest().authenticated())
-                .formLogin(formLogin -> formLogin.loginPage(this.adminServer.getContextPath() + "/login")
+                .formLogin(formLogin -> formLogin.loginPage(loginPageUrl)
                         .successHandler(successHandler))
-                .logout((logout) ->
-                        logout
+                .logout(logout -> logout
                           .logoutUrl(this.adminServer.getContextPath() + "/logout")
                           .logoutSuccessHandler(
-                                new ForwardLogoutSuccessHandler(this.adminServer.getContextPath() + "/login")))
+                                new ForwardLogoutSuccessHandler(loginPageUrl)))
                 .httpBasic(Customizer.withDefaults())
-                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers(
-                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/logout", HttpMethod.POST.toString()),
-                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/instances", HttpMethod.POST.toString()),
-                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/instances/*", HttpMethod.DELETE.toString()),
-                                new AntPathRequestMatcher(this.adminServer.getContextPath() + "/actuator/**")))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher(this.adminServer.getContextPath() + "/logout", HttpMethod.POST.toString())))
                 .rememberMe(rememberMe -> rememberMe.key(UUID.randomUUID()
                                 .toString())
                         .tokenValiditySeconds(1209600));
