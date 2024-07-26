@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/spring-admin-server-*.jar $JAVA_ADDITIONAL_PROPERTIES
+web: java $JAVA_VM_OPTIONS -jar target/spring-admin-server-*.jar $WEB_EXTRA_PARAMS
