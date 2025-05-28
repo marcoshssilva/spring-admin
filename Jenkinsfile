@@ -5,6 +5,6 @@ pipelineUsingJava17AndMavenWithPublicDockerImage('marcoshssilva/spring-admin',
         'CERT_DOMAIN': 'starlord443.dev',
         'DEPLOY': 'DOKKU',
         'DOKKU_SELECTED_BUILDPACK': 'herokuish', // Options can be 'dockerfile', 'null' and DEFAULT 'herokuish'
-        'HOST': 'spring-admin.starlord443.dev',
+        'HOST': 'spring-admin.g.starlord443.dev',
     ],
 )
