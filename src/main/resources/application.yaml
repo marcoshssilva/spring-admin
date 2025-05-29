@@ -34,7 +34,7 @@ management:
     port: ${MANAGEMENT_PORT:8180}
 spring:
   application:
-    name: spring-admin-server
+    name: spring-boot-admin
   security:
     user:
       name: ${SPRING_SECURITY_USER_NAME:sysadmin}
