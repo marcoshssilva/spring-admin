@@ -1,1 +1,1 @@
-# Spring-Boot-Admin
+# Spring-Cloud-Admin
