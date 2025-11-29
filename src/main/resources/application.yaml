@@ -23,13 +23,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,metrics"
+        include: "health,metrics,info,serviceregistry"
+    jmx:
+      exposure:
+        include: "health,metrics,info,serviceregistry"
   endpoint:
     health:
       show-details: ALWAYS
       show-components: ALWAYS
-    shutdown:
-      enabled: false
   server:
     port: ${MANAGEMENT_PORT:8180}
 spring:
