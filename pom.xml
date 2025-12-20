@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.marcoshssilva</groupId>
 	<artifactId>spring-admin-server</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0-RC-SNAPSHOT</version>
 	<name>spring-admin-server</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
