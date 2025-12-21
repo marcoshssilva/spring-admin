@@ -1,3 +1,10 @@
+spring:
+  application:
+    name: ${APP_NAME:spring-cloud-admin}
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER_NAME:sysadmin}
+      password: ${SPRING_SECURITY_USER_PASSWORD:sysadmin}
 server:
   port: ${PORT:8080}
   servlet:
@@ -7,36 +14,33 @@ eureka:
     leaseRenewalIntervalInSeconds: 30
     health-check-url-path: /actuator/health
     prefer-ip-address: true
-    metadata-map:
-      username: ${spring.security.user.name}
-      password: ${spring.security.user.password}
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
       defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761/eureka/}
 management:
+  server:
+    port: ${MANAGEMENT_PORT:8080}
   info:
-    env:
-      enabled: true
-    java:
-      enabled: true
+    env.enabled: true
+    java.enabled: true
+    os.enabled: true
+    process.enabled: true
+    git.enabled: true
+    git.mode: full
   endpoints:
+    jmx.exposure.include: "*"
     web:
-      exposure:
-        include: "health,metrics,info,serviceregistry"
-    jmx:
-      exposure:
-        include: "health,metrics,info,serviceregistry"
+      exposure.include: "*"
+      cors:
+        allowed-origins: ${MANAGEMENT_CORS_ALLOWED_ORIGINS:*}
+        allowed-methods: ${MANAGEMENT_CORS_ALLOWED_METHODS:*}
+        max-age: ${MANAGEMENT_CORS_ALLOWED_MAXAGE:3600}
   endpoint:
     health:
-      show-details: ALWAYS
-      show-components: ALWAYS
-  server:
-    port: ${MANAGEMENT_PORT:8180}
-spring:
-  application:
-    name: ${APP_NAME:spring-cloud-admin}
-  security:
-    user:
-      name: ${SPRING_SECURITY_USER_NAME:sysadmin}
-      password: ${SPRING_SECURITY_USER_PASSWORD:sysadmin}
+      show-details: always
+      show-components: always
+    env:
+      show-values: always
+    configprops:
+      show-values: always
