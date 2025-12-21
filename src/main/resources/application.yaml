@@ -2,9 +2,18 @@ spring:
   application:
     name: ${APP_NAME:spring-cloud-admin}
   security:
-    user:
-      name: ${SPRING_SECURITY_USER_NAME:sysadmin}
-      password: ${SPRING_SECURITY_USER_PASSWORD:sysadmin}
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI:http://localhost:8080/}
+          jwk-set-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI:http://localhost:8080/.well-known/jwks.json}
+          jws-algorithms: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWSALGORITHMS:RS256}
+          redirect_uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_REDIRECTURI:http://localhost:8080/api/oauth2/callback}
+          client_id: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_CLIENTID:changeme}
+          client_secret: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_CLIENTSECRET:changeme}
+          authorization_endpoint: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUTHORIZATIONENDPOINT:http://localhost:8080/oauth/authorize}
+          token_endpoint: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_TOKENENDPOINT:http://localhost:8080/oauth/token}
+          audience: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCE:http://localhost:8080/api/v2/}
 server:
   port: ${PORT:8080}
   servlet:
