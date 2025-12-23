@@ -69,7 +69,7 @@ public class WebSecurityConfiguration {
 
         // clear all authentication when call logout
         http.logout(logout -> logout
-                .deleteCookies("JSESSIONID", "ACCESS_TOKEN")
+                .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(Boolean.TRUE)
                 .clearAuthentication(Boolean.TRUE)
                 .logoutUrl(this.adminServer.getContextPath().concat("/logout"))

@@ -1,8 +1,7 @@
 package br.com.marcoshssilva.springadminserver.controller;
 
 import br.com.marcoshssilva.springadminserver.data.JwtTokenResponse;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class OAuth2CallbackController {
     private String oauth2TokenRedirectUri;
 
     @GetMapping
-    public String callback(@RequestParam(required = false) String code, HttpServletResponse httpServletResponse) {
+    public String callback(@RequestParam(required = false) String code, HttpServletRequest httpServletRequest) {
         JwtTokenResponse res = null;
 
         if (Objects.nonNull(code)) {
@@ -62,17 +61,8 @@ public class OAuth2CallbackController {
 
             if (Objects.nonNull(response) && response.getStatusCode().is2xxSuccessful()) {
                 res = response.getBody();
+                httpServletRequest.getSession().setAttribute("ACCESS_TOKEN", res);
             }
-        }
-
-        if (Objects.nonNull(res)) {
-            Cookie cookie = new Cookie("ACCESS_TOKEN", res.getAccessToken());
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            cookie.setPath("/");
-            cookie.setMaxAge(3600);
-
-            httpServletResponse.addCookie(cookie);
         }
 
         return "redirect:/";
