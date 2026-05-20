@@ -1,7 +1,7 @@
 {
   "name": "spring-admin",
   "description": "Monitor to observe all Spring Boot apps using Actuator",
-  "stack": "heroku-22",
+  "stack": "heroku-24",
   "buildpacks": [],
   "env": {
     "SPRING_PROFILES_ACTIVE": {
