@@ -1,4 +1,4 @@
-package br.com.marcoshssilva.springadminserver;
+package com.github.marcoshssilva.springadmin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

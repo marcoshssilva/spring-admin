@@ -1,4 +1,4 @@
-package br.com.marcoshssilva.springadminserver;
+package com.github.marcoshssilva.springadmin;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;

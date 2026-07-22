@@ -1,4 +1,4 @@
-package br.com.marcoshssilva.springadminserver.configs;
+package com.github.marcoshssilva.springadmin.configs;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 

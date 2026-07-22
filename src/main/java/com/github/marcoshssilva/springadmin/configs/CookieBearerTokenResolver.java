@@ -1,6 +1,6 @@
-package br.com.marcoshssilva.springadminserver.configs;
+package com.github.marcoshssilva.springadmin.configs;
 
-import br.com.marcoshssilva.springadminserver.data.JwtTokenResponse;
+import com.github.marcoshssilva.springadmin.data.JwtTokenResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
