@@ -1,0 +1,57 @@
+otel:
+  sdk:
+    disabled: ${OTEL_SDK_DISABLED:false}
+  instrumentation:
+    common:
+      default-enabled: false
+    jdbc:
+      enabled: false
+    log4j-appender:
+      enabled: true
+    logback-mdc:
+      enabled: true
+    spring-web:
+      enabled: true
+    spring-webmvc:
+      enabled: true
+    spring-webflux:
+      enabled: false
+    kafka:
+      enabled: false
+    mongo:
+      enabled: false
+    micrometer:
+      enabled: true
+    r2dbc:
+      enabled: false
+  resource:
+    attributes_list: ${OTEL_RESOURCE_ATTRIBUTES:}
+    attributes:
+      - name: deployment.environment
+        value: ${ENV:localhost}
+      - name: service.name
+        value: ${OTEL_SERVICE_NAME:${spring.application.name}}
+      - name: service.namespace
+        value: ${OTEL_SERVICE_NAMESPACE:${spring.application.name}}
+  tracer_provider:
+    sampler:
+      parent_based:
+        root:
+          always_on:
+    processors:
+      - batch:
+          exporter:
+            otlp_http:
+              endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}/v1/traces
+  meter_provider:
+    readers:
+      - periodic:
+          exporter:
+            otlp_http:
+              endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}/v1/metrics
+  logger_provider:
+    processors:
+      - batch:
+          exporter:
+            otlp_http:
+              endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}/v1/logs

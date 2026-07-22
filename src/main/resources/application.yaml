@@ -1,6 +1,8 @@
 spring:
   application:
     name: ${APP_NAME:spring-admin}
+  profiles:
+    default: ${SPRING_PROFILES_ACTIVE:opentelemetry}
   security:
     oauth2:
       resourceserver:
@@ -53,3 +55,7 @@ management:
       show-values: always
     configprops:
       show-values: always
+otel:
+  file_format: 1.0
+  sdk:
+    disabled: true
