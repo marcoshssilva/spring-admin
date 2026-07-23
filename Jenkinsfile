@@ -1,1 +1,1 @@
-pipelineUsingJava25AndMaven('marcoshssilva/spring-admin', ['APP_NAME': 'spring-admin', 'DEPLOY': 'DOKKU', 'DOKKU_SELECTED_BUILDPACK': 'pack', 'ENABLE_SONARQUBE_CHECK': 'false'])
+pipelineUsingJava25AndMaven('marcoshssilva/spring-admin', ['APP_NAME': 'spring-admin', 'DEPLOY': 'DOKKU', 'ENABLE_SONARQUBE_CHECK': 'false', 'AGENT_EXTRA_LABELS': 'node-builder', 'CLEAN_WORKSPACE': 'true'])
