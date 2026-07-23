@@ -1,15 +1,30 @@
-FROM maven:3.9.5-eclipse-temurin-17-focal AS builder
-WORKDIR /build
+FROM eclipse-temurin:25-jre AS java
 
-COPY pom.xml /build/pom.xml
-RUN mvn dependency:go-offline
+USER root
 
-COPY src /build/src
-RUN mvn install
+WORKDIR /app
+COPY --chmod=644 --chown=root:root ./target/spring-admin-*.jar app.jar
 
-FROM eclipse-temurin:17-jre-focal AS java
-COPY --from=builder /build/target/spring-admin-server-*.jar app.jar
-ENTRYPOINT java -XX:+UseContainerSupport -XX:MaxRAMPercentage=80 $JAVA_OPTIONS -jar app.jar
+USER 1001
 
-EXPOSE 8080
-EXPOSE 8180
+ARG OTEL_SERVICE_NAME
+ARG OTEL_SERVICE_NAMESPACE
+ARG JAVA_VM_OPTIONS
+ARG PORT
+ARG MANAGEMENT_PORT
+ARG SPRING_PROFILES_ACTIVE
+
+ENV OTEL_SERVICE_NAME="spring-admin"
+ENV OTEL_SERVICE_NAMESPACE="app"
+ENV JAVA_VM_OPTIONS="-XX:MaxRAMPercentage=80.0 -Dfile.encoding=UTF-8"
+ENV PORT="8080"
+ENV MANAGEMENT_PORT="8081"
+ENV SPRING_PROFILES_ACTIVE="docker"
+
+
+ENTRYPOINT ["sh", "-c"]
+CMD ["exec java $JAVA_VM_OPTIONS -jar /app/app.jar"]
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD sh -c "wget --no-verbose --tries=1 --spider http://localhost:$MANAGEMENT_PORT/actuator/health || exit 1"
+
+EXPOSE 8080 8081
