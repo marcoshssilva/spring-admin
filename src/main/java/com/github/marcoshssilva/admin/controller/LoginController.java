@@ -1,4 +1,4 @@
-package com.github.marcoshssilva.springadmin.controller;
+package com.github.marcoshssilva.admin.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

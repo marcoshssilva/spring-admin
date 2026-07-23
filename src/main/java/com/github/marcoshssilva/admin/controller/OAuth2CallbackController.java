@@ -1,6 +1,6 @@
-package com.github.marcoshssilva.springadmin.controller;
+package com.github.marcoshssilva.admin.controller;
 
-import com.github.marcoshssilva.springadmin.data.JwtTokenResponse;
+import com.github.marcoshssilva.admin.data.JwtTokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;

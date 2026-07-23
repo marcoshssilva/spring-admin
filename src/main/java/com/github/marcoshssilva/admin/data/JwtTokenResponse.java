@@ -1,4 +1,4 @@
-package com.github.marcoshssilva.springadmin.data;
+package com.github.marcoshssilva.admin.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
