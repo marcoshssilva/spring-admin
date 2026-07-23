@@ -15,11 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity()
 @EnableWebSecurity
-
-@lombok.extern.slf4j.Slf4j
-@lombok.RequiredArgsConstructor
 public class WebSecurityConfiguration {
     private final AdminServerProperties adminServer;
+
+    public WebSecurityConfiguration(AdminServerProperties adminServer) {
+        this.adminServer = adminServer;
+    }
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
