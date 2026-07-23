@@ -43,15 +43,24 @@ otel:
           exporter:
             otlp_http:
               endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}/v1/traces
+              headers:
+                - name: Authorization
+                  value: ${OTEL_AUTHORIZATION_HEADER:}
   meter_provider:
     readers:
       - periodic:
           exporter:
             otlp_http:
               endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}/v1/metrics
+              headers:
+                - name: Authorization
+                  value: ${OTEL_AUTHORIZATION_HEADER:}
   logger_provider:
     processors:
       - batch:
           exporter:
             otlp_http:
               endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}/v1/logs
+              headers:
+                - name: Authorization
+                  value: ${OTEL_AUTHORIZATION_HEADER:}
