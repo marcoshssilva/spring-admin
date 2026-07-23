@@ -3,9 +3,9 @@ otel:
     disabled: ${OTEL_SDK_DISABLED:false}
   instrumentation:
     common:
-      default-enabled: false
+      default-enabled: true
     jdbc:
-      enabled: false
+      enabled: true
     log4j-appender:
       enabled: true
     logback-mdc:
@@ -15,15 +15,15 @@ otel:
     spring-webmvc:
       enabled: true
     spring-webflux:
-      enabled: false
+      enabled: true
     kafka:
-      enabled: false
+      enabled: true
     mongo:
-      enabled: false
+      enabled: true
     micrometer:
       enabled: true
     r2dbc:
-      enabled: false
+      enabled: true
   resource:
     attributes_list: ${OTEL_RESOURCE_ATTRIBUTES:}
     attributes:
