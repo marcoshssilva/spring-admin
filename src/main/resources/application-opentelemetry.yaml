@@ -36,9 +36,21 @@ otel:
       - name: service.version
         value: ${APP_VERSION:unknown}
       - name: service.instance.id
-        value: ${HOSTNAME:${random.uuid}}
+        value: ${OTEL_SERVICE_INSTANCE_ID:${HOSTNAME:${random.uuid}}}
       - name: host.name
         value: ${HOSTNAME:localhost}
+      - name: application.domain
+        value: ${APPLICATION_DOMAIN:default}
+      - name: application.team
+        value: ${APPLICATION_TEAM:unknown}
+      - name: spring.profiles.active
+        value: ${spring.profiles.active:default}
+      - name: spring.application.group
+        value: ${SPRING_APPLICATION_GROUP:default}
+      - name: cloud.provider
+        value: ${CLOUD_PROVIDER:none}
+      - name: cloud.region
+        value: ${CLOUD_REGION:local}
   tracer_provider:
     sampler:
       parent_based:
