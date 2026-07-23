@@ -24,9 +24,12 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 30
     health-check-url-path: /actuator/health
-    prefer-ip-address: true
+    prefer-ip-address: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS:false}
   client:
-    registryFetchIntervalSeconds: 5
+    enabled: ${EUREKA_CLIENT_ENABLED:true}
+    registryFetchIntervalSeconds: ${EUREKA_CLIENT_FETCH_REGISTRY_INTERVAL_SECONDS:180}
+    register-with-eureka: ${EUREKA_CLIENT_REGISTER_WITH_EUREKA:true}
+    fetch-registry: ${EUREKA_CLIENT_FETCH_REGISTRY:true}
     serviceUrl:
       defaultZone: ${EUREKA_SERVICE_URL:http://admin:admin@localhost:8761/eureka/}
 management:
