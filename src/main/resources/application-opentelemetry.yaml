@@ -28,11 +28,17 @@ otel:
     attributes_list: ${OTEL_RESOURCE_ATTRIBUTES:}
     attributes:
       - name: deployment.environment
-        value: ${ENV:localhost}
+        value: ${ENV:LOCAL}
       - name: service.name
         value: ${OTEL_SERVICE_NAME:${spring.application.name}}
       - name: service.namespace
         value: ${OTEL_SERVICE_NAMESPACE:${spring.application.name}}
+      - name: service.version
+        value: ${APP_VERSION:unknown}
+      - name: service.instance.id
+        value: ${HOSTNAME:${random.uuid}}
+      - name: host.name
+        value: ${HOSTNAME:localhost}
   tracer_provider:
     sampler:
       parent_based:
