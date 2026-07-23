@@ -12,7 +12,7 @@
 	<artifactId>spring-admin</artifactId>
 	<version>0.1.0-RC-SNAPSHOT</version>
 	<name>spring-admin</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Admin UI for administration of spring boot applications</description>
 	<properties>
 		<java.version>25</java.version>
 		<spring-boot-admin.version>4.1.2</spring-boot-admin.version>
